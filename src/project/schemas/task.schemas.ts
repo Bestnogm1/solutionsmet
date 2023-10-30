@@ -16,7 +16,7 @@ export class Task {
   ticketTitle: string;
 
   @Prop({ required: true })
-  severity: enumTask;
+  severity: string;
 
   @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner' } })
   Owner: User;
@@ -29,10 +29,6 @@ export class Task {
 
   @Prop({ required: true, default: "backlog" })
   status: string;
-
-  @Prop({ required: true, default: "backlog" })
-  taskImage: string;
-
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

@@ -11,13 +11,19 @@ export type UserDocument = HydratedDocument<User>;
 )
 export class User {
 
-  @Prop({ required: true })
-  title: string;
+  @Prop({ type: String, required: true })
+  firstName: string;
 
-  @Prop({ required: true })
-  author: string[];
+  @Prop({ type: String, required: true })
+  lastName: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }] })
+  @Prop({ type: String, default: '' })
+  bio: string;
+
+  @Prop({ type: String, default: '' })
+  profileImage: string;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }], default: [] })
   taskAssignedToMe: Task[];
 }
 

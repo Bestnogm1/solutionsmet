@@ -15,26 +15,40 @@ export class Project {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: true })
-  author: string[];
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }] })
-  owner: [];
-
   @Prop({
     type: {
-      backlog: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task', default: [] },],
-      inProgress: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task', default: [] }],
-      readyForReview: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task', default: [] }],
-      completed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task', default: [] }]
-    }
+      backlog: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Task',
+        },
+      ],
+      inProgress: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Task',
+        },
+      ],
+      readyForReview: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Task',
+        },
+      ],
+      completed: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Task',
+        },
+      ],
+    },
+    _id: false,
   })
-
   kanban: {
-    backlog: Task[],
-    inProgress: Task[],
-    readyForReview: Task[]
-    completed: Task[]
+    backlog: Task[];
+    inProgress: Task[];
+    readyForReview: Task[];
+    completed: Task[];
   }
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })

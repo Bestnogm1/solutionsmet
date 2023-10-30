@@ -1,16 +1,48 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post, Get } from '@nestjs/common';
 import { UserService } from './user.service';
+import { User } from './schemas/user.schemas';
+
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userServices: UserService) { }
   // give me the crud for this user
   @Post("create")
-  async createUser() {
+  async createUser(@Body() body: any) {
     try {
-
+      const createdUser = await this.userServices.create(body)
+      if (createdUser) {
+        return createdUser
+      }
     } catch (error) {
-      return "create user"
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Error getting All the user',
+          message: error.message,
+        },
+        HttpStatus.FORBIDDEN,
+      )
+
+    }
+  }
+  @Get("all")
+  async getAllUser() {
+    try {
+      const allUsers = await this.userServices.findAll()
+      if (allUsers) {
+        return allUsers
+      }
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Error getting All the user',
+          message: error.message,
+        },
+        HttpStatus.FORBIDDEN,
+      )
+
     }
   }
 

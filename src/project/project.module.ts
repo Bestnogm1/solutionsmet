@@ -4,12 +4,14 @@ import { ProjectService } from './project.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProjectSchema } from './schemas/project.schemas';
 import { TaskSchema } from './schemas/task.schemas';
+import { TaskController } from './task.controller';
+import { TaskService } from './task.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: "Project", schema: ProjectSchema }, { name: "task", schema: TaskSchema }]),
+    MongooseModule.forFeature([{ name: "Project", schema: ProjectSchema }, { name: "Task", schema: TaskSchema }]),
   ],
-  controllers: [ProjectController],
-  providers: [ProjectService]
+  controllers: [ProjectController, TaskController],
+  providers: [ProjectService, TaskService]
 })
 export class ProjectModule { }
