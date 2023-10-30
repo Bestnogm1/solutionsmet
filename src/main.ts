@@ -8,6 +8,6 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization',
   });
   console.log("connected to db====")
-  await app.listen(8000);
+  await app.listen(process.env.PORT, "0.0.0.0");
 }
 bootstrap();
