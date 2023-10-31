@@ -1,5 +1,6 @@
 import { Body, Controller, HttpException, HttpStatus, Param, Post, Get } from '@nestjs/common';
 import { ProjectService } from './project.service';
+import { CreateProjectDto, UpdateProjectTaskDto } from './dto/create-project.dto';
 
 
 @Controller('project')
@@ -7,7 +8,7 @@ export class ProjectController {
   constructor(private readonly userServices: ProjectService) { }
 
   @Post("create")
-  async createProject(@Body() createProjectBody: any) {
+  async createProject(@Body() createProjectBody: CreateProjectDto) {
     try {
       return await this.userServices.createProject(createProjectBody);
     } catch (error) {
@@ -23,7 +24,7 @@ export class ProjectController {
   }
 
   @Get(":id")
-  getOneProject(@Param("id") getOneProjectID: any) {
+  getOneProject(@Param("id") getOneProjectID: string) {
     try {
       return this.userServices.findOne(getOneProjectID);
     } catch (error) {
@@ -38,7 +39,7 @@ export class ProjectController {
     }
   }
   @Post(":id/ticketStatusChange")
-  ticketStatusChange(@Body() ticketStatusChangeDto: any, @Param("id") id: any) {
+  ticketStatusChange(@Body() ticketStatusChangeDto: UpdateProjectTaskDto, @Param("id") id: string) {
     try {
       return this.userServices.ticketStatusChange(id, ticketStatusChangeDto);
     } catch (error) {

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Project } from './schemas/project.schemas';
 import mongoose from 'mongoose';
 import { Task } from './schemas/task.schemas';
+import { CreateProjectDto, UpdateProjectTaskDto } from './dto/create-project.dto';
 
 @Injectable()
 export class ProjectService {
@@ -13,11 +14,12 @@ export class ProjectService {
     private taskModel: mongoose.Model<Task>
   ) { }
 
-  async createProject(createProjectDto: any) {
+  async createProject(createProjectDto: CreateProjectDto) {
     const createdProject = new this.projectModel(createProjectDto);
     return await createdProject.save();
   }
-  async findOne(id: number) {
+
+  async findOne(id: string) {
     const getOneProject = await this.projectModel.findById(id).populate('members')
       .populate({
         path: 'kanban.backlog kanban.inProgress kanban.readyForReview kanban.completed',
@@ -25,21 +27,21 @@ export class ProjectService {
     return getOneProject;
   }
 
-  async ticketStatusChange(id: number, ticketStatusChangeDto: any) {
+  async ticketStatusChange(id: string, ticketStatusChangeDto: UpdateProjectTaskDto) {
     await this.taskModel.findByIdAndUpdate(ticketStatusChangeDto.taskId, {
-      status: ticketStatusChangeDto.status
-    });
-    const getOneProject = await this.projectModel.findByIdAndUpdate(
-      id,
+      status: ticketStatusChangeDto.newStatus
+    }, { new: true });
+
+    const getOneProject = await this.projectModel.findOneAndUpdate(
+      { _id: id },
       {
         $pull: { [`kanban.${ticketStatusChangeDto.oldStatus}`]: ticketStatusChangeDto.taskId },
-        $push: { [`kanban.${ticketStatusChangeDto.status}`]: ticketStatusChangeDto.taskId },
+        $push: { [`kanban.${ticketStatusChangeDto.newStatus}`]: ticketStatusChangeDto.taskId },
       },
       { new: true },
     );
 
-    console.log(getOneProject);
-    return await getOneProject.save();
+    return getOneProject;
   }
 
 }

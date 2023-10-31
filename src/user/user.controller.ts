@@ -1,6 +1,7 @@
 import { Body, Controller, HttpException, HttpStatus, Post, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './schemas/user.schemas';
+import { UserDto } from './dto/create-user.dto';
 
 
 @Controller('user')
@@ -8,7 +9,7 @@ export class UserController {
   constructor(private readonly userServices: UserService) { }
   // give me the crud for this user
   @Post("create")
-  async createUser(@Body() body: any) {
+  async createUser(@Body() body: UserDto) {
     try {
       const createdUser = await this.userServices.create(body)
       if (createdUser) {
